@@ -49,7 +49,7 @@ flowchart LR
 
     Client --> Frontend
     Frontend -->|JWT Bearer Auth| Backend
-    Backend -->|select_for_update()| Postgres
+    Backend -->|Database Row Locking| Postgres
     Postgres --- Volume
 ```
 
