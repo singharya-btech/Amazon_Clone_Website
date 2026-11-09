@@ -1,0 +1,80 @@
+services:
+  database-service:
+    image: postgres:16-alpine
+    container_name: amazon_v1_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-amazon_v1}
+      POSTGRES_USER: ${POSTGRES_USER:-amazon_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-amazon_pass}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_v1_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    networks:
+      - amazon_v1_net
+
+  backend-service:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: amazon_v1_backend
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      POSTGRES_HOST: database-service
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: ${POSTGRES_DB:-amazon_v1}
+      POSTGRES_USER: ${POSTGRES_USER:-amazon_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-amazon_pass}
+      DJANGO_DEBUG: ${DJANGO_DEBUG:-True}
+      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY:-v1-dev-secret-key-123}
+      DJANGO_ALLOWED_HOSTS: "*"
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
+    depends_on:
+      database-service:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8000/api/health/ || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+    networks:
+      - amazon_v1_net
+
+  frontend-service:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: amazon_v1_frontend
+    restart: unless-stopped
+    ports:
+      - "3000:80"
+    environment:
+      VITE_API_URL: http://localhost:8000
+    depends_on:
+      backend-service:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:80/ || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    networks:
+      - amazon_v1_net
+
+volumes:
+  postgres_v1_data:
+
+networks:
+  amazon_v1_net:
+    driver: bridge

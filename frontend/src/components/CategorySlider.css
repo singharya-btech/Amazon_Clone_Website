@@ -1,0 +1,13 @@
+.categorySliderWrap { position: relative; display: flex; align-items: center; margin: 20px 0; }
+.categorySlider { display: flex; gap: 12px; overflow-x: auto; padding: 8px 12px; scroll-snap-type: x mandatory; }
+.csCard { min-width: 110px; background: #fff; border-radius: 8px; padding: 10px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); text-align: center; cursor: pointer; scroll-snap-align: start; display:flex; flex-direction:column; align-items:center; }
+.csCard img { width: 56px; height: 56px; object-fit: contain; margin-bottom: 8px; }
+.csCard span { font-size: 13px; color: #111; }
+.csBtn { background: rgba(0,0,0,0.06); border: none; width: 34px; height: 34px; border-radius: 50%; cursor: pointer; display:flex; align-items:center; justify-content:center; }
+.csBtn:hover { background: rgba(0,0,0,0.12); }
+.csBtn.prev { margin-right: 8px; }
+.csBtn.next { margin-left: 8px; }
+
+/* hide scrollbar for modern browsers */
+.categorySlider::-webkit-scrollbar { display: none; }
+.categorySlider { -ms-overflow-style: none; scrollbar-width: none; }

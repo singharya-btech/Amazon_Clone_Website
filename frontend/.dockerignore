@@ -1,0 +1,12 @@
+node_modules
+dist
+.git
+.gitignore
+.vscode
+.idea
+*.log
+.env
+.env.local
+.env.production
+README.md
+.oxlintrc.json
