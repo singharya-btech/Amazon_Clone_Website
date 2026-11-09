@@ -1,0 +1,35 @@
+.langOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2100;
+}
+
+.langModal {
+  background: #fff;
+  padding: 18px;
+  border-radius: 8px;
+  width: 360px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.2);
+  color: #000;
+}
+
+.langModal .langLabel,
+.langModal .langFlag,
+.langModal h3 {
+  color: #000;
+}
+
+.langList { display: flex; flex-direction: column; gap: 8px; margin: 12px 0; }
+.langItem { display: flex; align-items: center; gap: 10px; padding: 8px; border-radius: 6px; cursor: pointer; }
+.langItem input { margin-right: 6px; }
+.langItem.active { background: #f3f3f3; }
+.langFlag { font-size: 20px; }
+.langLabel { font-size: 14px; }
+
+.langActions { display: flex; justify-content: flex-end; gap: 8px; }
+.langBtn { padding: 8px 12px; border-radius: 6px; border: none; cursor: pointer; }
+.langSave { background: #ffd814; font-weight: bold; }

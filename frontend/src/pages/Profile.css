@@ -1,0 +1,134 @@
+.profile {
+    min-height: 100vh;
+    padding: 28px 0 56px;
+    background: linear-gradient(180deg, #e7f3f8 0, #f5f6f6 330px, #f5f6f6 100%);
+    color: #17202b;
+}
+
+.profile > a:first-child {
+    display: block;
+    width: min(1120px, calc(100% - 40px));
+    margin: 0 auto 20px;
+}
+
+.profile__logo { width: 126px; display: block; object-fit: contain; }
+
+.profile__container {
+    width: min(1120px, calc(100% - 40px));
+    margin: 0 auto;
+}
+
+.profile__container > h1 {
+    margin: 0 0 22px;
+    padding: 29px 34px;
+    border-radius: 16px;
+    background: linear-gradient(120deg, #172f41, #167085);
+    color: #fff;
+    font-size: clamp(28px, 4vw, 38px);
+    box-shadow: 0 12px 26px rgba(18, 57, 75, .18);
+}
+
+.profile__container > form,
+.profile__container > h2 {
+    display: none;
+}
+
+/* The details and security forms become a two-column dashboard row. */
+.profile__container > form:first-of-type {
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    width: calc(60% - 10px);
+    min-height: 410px;
+    float: left;
+    padding: 26px;
+    border: 1px solid #e1e5e8;
+    border-radius: 13px;
+    background: #fff;
+    box-shadow: 0 3px 12px rgba(16, 29, 39, .07);
+}
+
+.profile__container > h2 {
+    display: block;
+    box-sizing: border-box;
+    float: right;
+    width: calc(40% - 10px);
+    margin: 0;
+    padding: 26px 26px 0;
+    border: 1px solid #e1e5e8;
+    border-bottom: 0;
+    border-radius: 13px 13px 0 0;
+    background: #fff;
+    font-size: 21px;
+}
+
+.profile__container > form:nth-of-type(2) {
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    width: calc(40% - 10px);
+    min-height: 360px;
+    float: right;
+    padding: 18px 26px 26px;
+    border: 1px solid #e1e5e8;
+    border-top: 0;
+    border-radius: 0 0 13px 13px;
+    background: #fff;
+    box-shadow: 0 3px 12px rgba(16, 29, 39, .07);
+}
+
+.profile__container > form:first-of-type::before,
+.profile__container > h2::after {
+    display: block;
+    margin-bottom: 20px;
+    color: #6b7780;
+    font-size: 14px;
+    font-weight: 400;
+}
+.profile__container > form:first-of-type::before { content: "Personal information"; font-size: 21px; color: #17202b; font-weight: 700; }
+.profile__container > h2::after { content: "Keep your account secure with a strong password."; margin: 7px 0 0; }
+
+.profile__divider { clear: both; height: 0; margin: 0; }
+.profile__container label { margin: 0 0 6px; color: #36434f; font-size: 13px; font-weight: 700; }
+.profile__container input { box-sizing: border-box; width: 100%; height: 42px; margin: 0 0 15px; padding: 10px 11px; border: 1px solid #bcc6cc; border-radius: 6px; background: #fff; font-size: 14px; }
+.profile__container input:focus { outline: 3px solid rgba(0, 113, 133, .18); border-color: #007185; }
+.profile__container input[readonly] { background: #f0f2f3; color: #68747c; }
+.profile__button { align-self: flex-start; margin-top: 4px; padding: 11px 18px; border: 0; border-radius: 7px; background: #ffd814; color: #111; cursor: pointer; font-weight: 700; }
+.profile__button:hover { background: #f7ca00; }
+.profile__passwordMessage { clear: both; }
+
+.profile__section { clear: both; margin-top: 22px; padding: 25px; border: 1px solid #e1e5e8; border-radius: 13px; background: #fff; box-shadow: 0 3px 12px rgba(16, 29, 39, .06); }
+.profile__section h2 { margin: 0; color: #17202b; font-size: 21px; }
+.profile__sectionHeader { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
+.profile__sectionHeader a { color: #007185; font-size: 14px; font-weight: 700; text-decoration: none; }
+.profile__orderList { display: grid; gap: 10px; }
+.profile__order { display: grid; grid-template-columns: 58px 1fr auto; align-items: center; gap: 14px; padding: 11px; border: 1px solid #e1e5e8; border-radius: 8px; background: #fbfcfc; }
+.profile__order img { width: 58px; height: 58px; object-fit: contain; }
+.profile__order div { display: flex; flex-direction: column; gap: 4px; }
+.profile__order span, .profile__empty { color: #697680; font-size: 14px; }
+.profile__order b, .profile__product b { color: #b12704; }
+.profile__productGrid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; margin-top: 15px; }
+.profile__product { display: flex; flex-direction: column; gap: 7px; min-width: 0; padding: 12px; border: 1px solid #e1e5e8; border-radius: 9px; background: #fff; color: #1d2b36; text-decoration: none; font-size: 14px; transition: transform .18s, box-shadow .18s; }
+.profile__product:hover { transform: translateY(-3px); box-shadow: 0 7px 16px rgba(22, 45, 60, .13); }
+.profile__product img { width: 100%; height: 125px; object-fit: contain; }
+.profile__product span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.profile__error { color: #b12704; }
+.profile__footer { clear: both; display: flex; align-items: center; justify-content: space-between; gap: 14px; margin: 22px 2px 0; color: #68747c; font-size: 13px; }
+.profile__logout { padding: 9px 14px; border: 1px solid #b12704; border-radius: 6px; background: #fff; color: #b12704; cursor: pointer; font-weight: 700; }
+.profile__logout:hover { background: #fff1ed; }
+
+@media (max-width: 760px) {
+    .profile { padding-top: 18px; }
+    .profile > a:first-child, .profile__container { width: min(100% - 28px, 600px); }
+    .profile__container > form:first-of-type, .profile__container > h2, .profile__container > form:nth-of-type(2) { float: none; width: 100%; min-height: 0; }
+    .profile__container > h2 { margin-top: 20px; }
+    .profile__productGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 460px) {
+    .profile__container > h1 { padding: 23px 20px; }
+    .profile__container > form:first-of-type, .profile__container > h2, .profile__container > form:nth-of-type(2), .profile__section { padding-left: 18px; padding-right: 18px; }
+    .profile__order { grid-template-columns: 48px 1fr; }
+    .profile__order img { width: 48px; height: 48px; }
+    .profile__order b { grid-column: 2; }
+}
