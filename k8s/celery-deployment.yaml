@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: celery-worker
+  labels:
+    app.kubernetes.io/name: celery-worker
+    app.kubernetes.io/part-of: marketplace
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: celery-worker
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: celery-worker
+        app.kubernetes.io/part-of: marketplace
+    spec:
+      containers:
+        - name: celery-worker
+          image: aryasingh1234/amazone_clone:backend-v2
+          command: ["celery", "-A", "config", "worker", "--loglevel=info"]
+          envFrom:
+            - configMapRef:
+                name: marketplace-backend-config
+          env:
+            - name: REDIS_HOST
+              value: "redis-service"
+            - name: REDIS_PORT
+              value: "6379"
+            - name: DJANGO_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: marketplace-secrets
+                  key: django-secret-key
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: marketplace-secrets
+                  key: postgres-password
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi

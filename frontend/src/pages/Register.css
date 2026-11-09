@@ -1,0 +1,92 @@
+.register {
+    min-height: 100vh;
+    background: white;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.register__logo {
+    width: 130px;
+    margin: 25px 0;
+    object-fit: contain;
+}
+
+.register__container {
+    width: 380px;
+    border: 1px solid lightgray;
+    border-radius: 8px;
+    padding: 25px;
+}
+
+.register__container h1 {
+    margin-bottom: 20px;
+    font-weight: 500;
+}
+
+.register__container form {
+    display: flex;
+    flex-direction: column;
+}
+
+.register__container label {
+    margin-bottom: 5px;
+    font-weight: 600;
+}
+
+.register__container input {
+    height: 42px;
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 1px solid gray;
+    border-radius: 4px;
+    font-size: 15px;
+}
+
+.register__button {
+    margin-top: 10px;
+    padding: 12px;
+
+    background: #E3A75B;
+    border: 1px solid #C98A3E;
+    border-radius: 20px;
+
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.register__button:hover {
+    background: #CE9550;
+}
+
+.register__container p {
+    margin: 20px 0;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.register__signin {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 14px;
+}
+
+.register__signin a {
+    margin-left: 6px;
+    color: #007185;
+    text-decoration: none;
+}
+
+.register__signin a:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 480px) {
+
+    .register__container {
+        width: 90%;
+    }
+
+}

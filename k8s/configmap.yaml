@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: marketplace-config
+  labels:
+    app.kubernetes.io/part-of: marketplace
+data:
+  DJANGO_DEBUG: "false"
+  DJANGO_ALLOWED_HOSTS: "*"
+  LOG_LEVEL: "INFO"
+  POSTGRES_PORT: "5432"
+  GUNICORN_WORKERS: "2"
+  GUNICORN_THREADS: "4"
+  GUNICORN_TIMEOUT: "60"

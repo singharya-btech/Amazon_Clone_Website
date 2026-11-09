@@ -1,0 +1,160 @@
+# =============================================================================
+# Production-ready Docker Compose for Amazon Clone V4 - Enterprise Multi-Vendor Marketplace
+# =============================================================================
+
+services:
+  # ---------------------------------------------------------------------------
+  # PostgreSQL 16 Database
+  # ---------------------------------------------------------------------------
+  database-service:
+    image: postgres:16-alpine
+    container_name: amazon_v4_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-marketplace_v4}
+      POSTGRES_USER: ${POSTGRES_USER:-marketplace}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-marketplace_secret_pass}
+    ports:
+      - "5435:5432"
+    volumes:
+      - postgres_v4_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    networks:
+      - marketplace_v4_net
+
+  # ---------------------------------------------------------------------------
+  # Redis 7 In-Memory Cache & Message Broker
+  # ---------------------------------------------------------------------------
+  redis-service:
+    image: redis:7-alpine
+    container_name: amazon_v4_redis
+    restart: unless-stopped
+    ports:
+      - "6381:6379"
+    volumes:
+      - redis_v4_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - marketplace_v4_net
+
+  # ---------------------------------------------------------------------------
+  # Django 6 Backend REST API
+  # ---------------------------------------------------------------------------
+  backend-service:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: amazon_v4_backend
+    restart: unless-stopped
+    ports:
+      - "${BACKEND_PORT:-8004}:8000"
+    environment:
+      DJANGO_DEBUG: ${DJANGO_DEBUG:-false}
+      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY:-v4-enterprise-secret-key-999}
+      DJANGO_ALLOWED_HOSTS: "*"
+      DJANGO_CSRF_TRUSTED_ORIGINS: "http://localhost:3004,http://127.0.0.1:3004,http://localhost:8004"
+      CORS_ALLOW_ALL_ORIGINS: "true"
+      POSTGRES_HOST: database-service
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: ${POSTGRES_DB:-marketplace_v4}
+      POSTGRES_USER: ${POSTGRES_USER:-marketplace}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-marketplace_secret_pass}
+      REDIS_HOST: redis-service
+      REDIS_PORT: 6379
+      GUNICORN_WORKERS: 2
+      GUNICORN_THREADS: 4
+      GUNICORN_TIMEOUT: 60
+    depends_on:
+      database-service:
+        condition: service_healthy
+      redis-service:
+        condition: service_healthy
+    volumes:
+      - media_v4_data:/app/media
+      - static_v4_data:/app/staticfiles
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8000/health/ || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 25s
+    networks:
+      - marketplace_v4_net
+
+  # ---------------------------------------------------------------------------
+  # Celery Background Worker
+  # ---------------------------------------------------------------------------
+  celery-worker:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: amazon_v4_celery
+    command: celery -A config worker --loglevel=info
+    restart: unless-stopped
+    environment:
+      DJANGO_DEBUG: "false"
+      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY:-v4-enterprise-secret-key-999}
+      DJANGO_ALLOWED_HOSTS: "*"
+      POSTGRES_HOST: database-service
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: ${POSTGRES_DB:-marketplace_v4}
+      POSTGRES_USER: ${POSTGRES_USER:-marketplace}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-marketplace_secret_pass}
+      REDIS_HOST: redis-service
+      REDIS_PORT: 6379
+    depends_on:
+      - backend-service
+      - redis-service
+    networks:
+      - marketplace_v4_net
+
+  # ---------------------------------------------------------------------------
+  # React 19 Frontend (Served via Nginx)
+  # ---------------------------------------------------------------------------
+  frontend-service:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: amazon_v4_frontend
+    restart: unless-stopped
+    ports:
+      - "${FRONTEND_PORT:-3004}:80"
+    environment:
+      BACKEND_HOST: backend-service
+      BACKEND_PORT: 8000
+    depends_on:
+      backend-service:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:80/ || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    networks:
+      - marketplace_v4_net
+
+# =============================================================================
+# Networks
+# =============================================================================
+networks:
+  marketplace_v4_net:
+    driver: bridge
+
+# =============================================================================
+# Volumes
+# =============================================================================
+volumes:
+  postgres_v4_data:
+  redis_v4_data:
+  media_v4_data:
+  static_v4_data:

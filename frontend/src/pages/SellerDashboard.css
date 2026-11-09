@@ -1,0 +1,230 @@
+.sellerDash {
+    min-height: 100vh;
+    background: var(--paper);
+}
+
+.sellerDash__header {
+    background: var(--ink);
+    color: #fff;
+    padding: 28px 0;
+}
+
+.sellerDash__header .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.sellerDash__header h1 {
+    color: #fff;
+    font-size: 26px;
+    margin-bottom: 4px;
+}
+
+.sellerDash__header p {
+    color: #B7BECC;
+    font-size: 14px;
+}
+
+.sellerDash__logout {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.3);
+    color: #fff;
+    padding: 8px 16px;
+    border-radius: var(--radius-sm);
+}
+
+.sellerDash__logout:hover {
+    background: rgba(255,255,255,0.08);
+}
+
+.sellerDash__banner {
+    margin: 24px 0;
+    padding: 16px 20px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.sellerDash__banner.pending {
+    background: rgba(180,129,60,0.1);
+    border: 1px solid var(--brass);
+}
+
+.sellerDash__banner.verified {
+    background: rgba(31,111,99,0.08);
+    border: 1px solid var(--teal);
+}
+
+.sellerDash__banner.rejected {
+    background: rgba(163,72,50,0.08);
+    border: 1px solid var(--rust);
+}
+
+.sellerDash__banner strong {
+    display: block;
+    font-family: var(--font-display);
+    font-size: 16px;
+}
+
+.sellerDash__grid {
+    display: grid;
+    grid-template-columns: 380px 1fr;
+    gap: 24px;
+    margin-bottom: 60px;
+}
+
+.sellerDash__panel {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    padding: 22px;
+}
+
+.sellerDash__panel h3 {
+    margin-bottom: 16px;
+    font-size: 18px;
+}
+
+.sellerProductForm {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.sellerProductForm label {
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: -6px;
+}
+
+.sellerProductForm input,
+.sellerProductForm select,
+.sellerProductForm textarea {
+    padding: 9px 11px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+    font-family: var(--font-body);
+}
+
+.sellerProductForm textarea {
+    min-height: 70px;
+    resize: vertical;
+}
+
+.sellerProductForm .newCategoryRow {
+    display: flex;
+    gap: 8px;
+}
+
+.sellerProductForm .newCategoryRow input {
+    flex: 1;
+}
+
+.sellerProductForm .newCategoryRow button {
+    padding: 0 14px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    background: var(--paper);
+    font-size: 13px;
+}
+
+.sellerProductForm button[type="submit"] {
+    margin-top: 6px;
+    background: var(--brass);
+    color: #fff;
+    padding: 11px;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+}
+
+.sellerProductForm button[type="submit"]:hover {
+    background: var(--brass-dark);
+}
+
+.sellerProductForm img.preview {
+    width: 100%;
+    max-height: 140px;
+    object-fit: cover;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--line);
+}
+
+.sellerProducts__list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+}
+
+.sellerProductCard {
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    background: var(--surface);
+}
+
+.sellerProductCard img {
+    width: 100%;
+    height: 140px;
+    object-fit: cover;
+    background: var(--paper);
+}
+
+.sellerProductCard__body {
+    padding: 12px;
+}
+
+.sellerProductCard__body h4 {
+    font-size: 14px;
+    font-family: var(--font-body);
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.sellerProductCard__meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+}
+
+.sellerProductCard__actions {
+    display: flex;
+    gap: 8px;
+}
+
+.sellerProductCard__actions button {
+    flex: 1;
+    padding: 6px;
+    font-size: 12px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--line);
+    background: var(--paper);
+}
+
+.sellerProductCard__actions button.danger {
+    color: var(--rust);
+    border-color: var(--rust);
+    background: rgba(163,72,50,0.06);
+}
+
+.sellerDash__empty {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--text-muted);
+}
+
+@media (max-width: 900px) {
+    .sellerDash__grid {
+        grid-template-columns: 1fr;
+    }
+}

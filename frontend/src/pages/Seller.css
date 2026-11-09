@@ -1,0 +1,195 @@
+.sellerPortal {
+    min-height: 100vh;
+    display: flex;
+}
+
+.sellerPortal__aside {
+    flex: 0 0 38%;
+    background: var(--ink);
+    color: #fff;
+    padding: 48px 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.sellerPortal__aside-top a {
+    display: inline-block;
+    margin-bottom: 40px;
+}
+
+.sellerPortal__aside h1 {
+    color: #fff;
+    font-size: 32px;
+    line-height: 1.25;
+    margin-bottom: 16px;
+}
+
+.sellerPortal__aside p {
+    color: #C8CEDA;
+    max-width: 380px;
+}
+
+.sellerPortal__steps {
+    margin-top: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.sellerPortal__step {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+}
+
+.sellerPortal__step-index {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--brass);
+    border: 1px solid var(--brass);
+    border-radius: 50%;
+    width: 26px;
+    height: 26px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sellerPortal__step div strong {
+    display: block;
+    font-size: 15px;
+    margin-bottom: 2px;
+}
+
+.sellerPortal__step div span {
+    font-size: 13px;
+    color: #A8AFBE;
+}
+
+.sellerPortal__aside .brand-divider {
+    background-image: repeating-linear-gradient(
+        to right,
+        var(--brass) 0,
+        var(--brass) 1px,
+        transparent 1px,
+        transparent 40px
+    );
+    opacity: 0.5;
+    margin: 32px 0;
+}
+
+.sellerPortal__main {
+    flex: 1;
+    background: var(--paper);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+}
+
+.sellerPortal__card {
+    width: 100%;
+    max-width: 460px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    padding: 36px;
+}
+
+.sellerPortal__card h2 {
+    margin-bottom: 6px;
+}
+
+.sellerPortal__card .subtitle {
+    color: var(--text-muted);
+    font-size: 14px;
+    margin-bottom: 24px;
+}
+
+.sellerForm {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.sellerForm label {
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: -8px;
+    color: var(--ink);
+}
+
+.sellerForm input,
+.sellerForm select,
+.sellerForm textarea {
+    padding: 10px 12px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+    font-family: var(--font-body);
+    background: var(--surface);
+    color: var(--text);
+}
+
+.sellerForm textarea {
+    min-height: 80px;
+    resize: vertical;
+}
+
+.sellerForm .form-row {
+    display: flex;
+    gap: 12px;
+}
+
+.sellerForm .form-row > div {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.sellerForm button[type="submit"] {
+    margin-top: 8px;
+    background: var(--brass);
+    color: #fff;
+    border-radius: var(--radius-sm);
+    padding: 12px;
+    font-weight: 600;
+    font-size: 15px;
+}
+
+.sellerForm button[type="submit"]:hover {
+    background: var(--brass-dark);
+}
+
+.sellerPortal__switch {
+    margin-top: 20px;
+    font-size: 14px;
+    text-align: center;
+    color: var(--text-muted);
+}
+
+.sellerPortal__switch a {
+    color: var(--teal-dark);
+    font-weight: 600;
+}
+
+.sellerForm__error {
+    background: rgba(163,72,50,0.08);
+    border: 1px solid var(--rust);
+    color: var(--rust);
+    padding: 8px 12px;
+    border-radius: var(--radius-sm);
+    font-size: 13px;
+}
+
+@media (max-width: 860px) {
+    .sellerPortal {
+        flex-direction: column;
+    }
+    .sellerPortal__aside {
+        flex: none;
+    }
+}

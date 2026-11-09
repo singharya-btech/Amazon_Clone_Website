@@ -1,0 +1,101 @@
+.adminPage { background: var(--paper); min-height: 80vh; padding: 30px; }
+.adminPage h1 { margin-bottom: 20px; }
+.adminForm { background: var(--surface); border: 1px solid var(--line); padding: 20px; border-radius: var(--radius-md); max-width: 720px; }
+.adminForm label { display: block; margin-top: 12px; font-weight: bold; }
+.adminForm input[type="text"], .adminForm input[type="number"], .adminForm select, .adminForm textarea { width: 100%; padding: 8px; margin-top: 6px; border: 1px solid var(--line); border-radius: var(--radius-sm); font-family: var(--font-body); }
+.adminForm textarea { min-height: 100px; }
+.adminForm .preview { max-width: 200px; margin-top: 12px; border-radius: 6px; }
+.saveBtn { margin-top: 16px; padding: 10px 16px; background: var(--brass); color: #fff; border: none; border-radius: var(--radius-sm); cursor: pointer; font-weight: bold; }
+.saveBtn:hover { background: var(--brass-dark); }
+
+.sellerForm__error {
+    background: rgba(163,72,50,0.08);
+    border: 1px solid var(--rust);
+    color: var(--rust);
+    padding: 10px 14px;
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+}
+
+/* --- Seller management tab --- */
+.adminTabs { display: flex; gap: 8px; margin-bottom: 20px; }
+.adminTabs button {
+    padding: 9px 18px;
+    border: 1px solid var(--line);
+    background: var(--surface);
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--text-muted);
+}
+.adminTabs button.active {
+    background: var(--ink);
+    color: #fff;
+    border-color: var(--ink);
+}
+
+.sellerReview__list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.sellerReview__card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    padding: 18px 20px;
+}
+
+.sellerReview__top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.sellerReview__top h3 { font-size: 17px; }
+.sellerReview__meta { font-size: 13px; color: var(--text-muted); margin-top: 2px; }
+
+.sellerReview__desc {
+    margin: 12px 0;
+    font-size: 14px;
+    color: var(--text);
+    background: var(--paper);
+    border-radius: var(--radius-sm);
+    padding: 10px 12px;
+}
+
+.sellerReview__actions { display: flex; gap: 10px; flex-wrap: wrap; }
+
+.sellerReview__actions button {
+    padding: 8px 14px;
+    border-radius: var(--radius-sm);
+    font-size: 13px;
+    font-weight: 600;
+    border: 1px solid var(--line);
+    background: var(--paper);
+}
+
+.sellerReview__actions button.verify { background: var(--teal); color: #fff; border-color: var(--teal-dark); }
+.sellerReview__actions button.verify:hover { background: var(--teal-dark); }
+.sellerReview__actions button.remove { background: var(--rust); color: #fff; border-color: var(--rust); }
+.sellerReview__actions button.remove:hover { opacity: 0.9; }
+
+.sellerReview__products {
+    margin-top: 14px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 10px;
+}
+
+.sellerReview__productChip {
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    padding: 6px 8px;
+    font-size: 12px;
+    background: var(--paper);
+}
+
+.sellerReview__productChip strong { display: block; font-size: 13px; }
