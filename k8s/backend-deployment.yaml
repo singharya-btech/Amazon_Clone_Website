@@ -1,0 +1,85 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deployment
+  labels:
+    app: backend-v3
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend-v3
+  template:
+    metadata:
+      labels:
+        app: backend-v3
+    spec:
+      containers:
+      - name: backend
+        image: aryasingh1234/amazone_clone:backend-v3
+        ports:
+        - containerPort: 8000
+        env:
+        - name: POSTGRES_HOST
+          value: database-service
+        - name: POSTGRES_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: app-config-v3
+              key: POSTGRES_PORT
+        - name: POSTGRES_DB
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets-v3
+              key: POSTGRES_DB
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets-v3
+              key: POSTGRES_USER
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets-v3
+              key: POSTGRES_PASSWORD
+        - name: DJANGO_SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets-v3
+              key: DJANGO_SECRET_KEY
+        - name: DJANGO_DEBUG
+          valueFrom:
+            configMapKeyRef:
+              name: app-config-v3
+              key: DJANGO_DEBUG
+        - name: DJANGO_ALLOWED_HOSTS
+          valueFrom:
+            configMapKeyRef:
+              name: app-config-v3
+              key: DJANGO_ALLOWED_HOSTS
+        - name: LOG_LEVEL
+          valueFrom:
+            configMapKeyRef:
+              name: app-config-v3
+              key: LOG_LEVEL
+        livenessProbe:
+          httpGet:
+            path: /api/health/
+            port: 8000
+          initialDelaySeconds: 20
+          periodSeconds: 15
+          timeoutSeconds: 5
+        readinessProbe:
+          httpGet:
+            path: /api/health/
+            port: 8000
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          timeoutSeconds: 3
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "150m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"

@@ -1,0 +1,145 @@
+services:
+  database-service:
+    image: postgres:16-alpine
+    container_name: amazon_v3_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-amazon_v3}
+      POSTGRES_USER: ${POSTGRES_USER:-amazon_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-amazon_pass}
+    ports:
+      - "5434:5432"
+    volumes:
+      - postgres_v3_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    networks:
+      - amazon_v3_net
+
+  redis-service:
+    image: redis:7-alpine
+    container_name: amazon_v3_redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_v3_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - amazon_v3_net
+
+  backend-service:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: amazon_v3_backend
+    restart: unless-stopped
+    expose:
+      - "8000"
+    environment:
+      POSTGRES_HOST: database-service
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: ${POSTGRES_DB:-amazon_v3}
+      POSTGRES_USER: ${POSTGRES_USER:-amazon_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-amazon_pass}
+      REDIS_HOST: redis-service
+      REDIS_PORT: 6379
+      DJANGO_DEBUG: ${DJANGO_DEBUG:-True}
+      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY:-v3-dev-secret-key-789}
+      DJANGO_ALLOWED_HOSTS: "*"
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
+    depends_on:
+      database-service:
+        condition: service_healthy
+      redis-service:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8000/api/health/ || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+    networks:
+      - amazon_v3_net
+
+  celery-worker:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: amazon_v3_celery
+    command: celery -A config worker --loglevel=info
+    restart: unless-stopped
+    environment:
+      POSTGRES_HOST: database-service
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: ${POSTGRES_DB:-amazon_v3}
+      POSTGRES_USER: ${POSTGRES_USER:-amazon_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-amazon_pass}
+      REDIS_HOST: redis-service
+      REDIS_PORT: 6379
+      DJANGO_DEBUG: "False"
+      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY:-v3-dev-secret-key-789}
+      DJANGO_ALLOWED_HOSTS: "*"
+    depends_on:
+      - backend-service
+      - redis-service
+    networks:
+      - amazon_v3_net
+
+  frontend-service:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: amazon_v3_frontend
+    restart: unless-stopped
+    expose:
+      - "80"
+    environment:
+      VITE_API_URL: ""
+    depends_on:
+      backend-service:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:80/ || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    networks:
+      - amazon_v3_net
+
+  proxy-service:
+    image: nginx:1.27-alpine
+    container_name: amazon_v3_proxy
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - backend-service
+      - frontend-service
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:80/api/health/ || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    networks:
+      - amazon_v3_net
+
+volumes:
+  postgres_v3_data:
+  redis_v3_data:
+
+networks:
+  amazon_v3_net:
+    driver: bridge

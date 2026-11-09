@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: database-service
+spec:
+  selector:
+    app: postgres-v3
+  ports:
+  - port: 5432
+    targetPort: 5432
+  type: ClusterIP

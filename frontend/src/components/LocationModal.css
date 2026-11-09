@@ -1,0 +1,43 @@
+.locOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+
+.locModal {
+  background: white;
+  padding: 18px;
+  border-radius: 8px;
+  width: 320px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+}
+
+.locModal h3 {
+  margin: 0 0 12px 0;
+}
+
+.locModal select {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 12px;
+}
+
+.locActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.locBtn {
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+}
+
+.locCancel { background: #f3f3f3; }
+.locSave { background: #ffd814; font-weight: bold; }
